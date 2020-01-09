@@ -1,4 +1,11 @@
+Deep learning models are showing promise in digital pathology to aid diagnoses. 
+Training complex models require a significant amount and diversity of well-annotated data, typically housed in institutional archives. 
+These slides often contain clinically meaningful markings to indicate regions of interest. 
+If slides are scanned with the ink present, then the downstream model may end up looking for regions with ink before making a classification. 
+If scanned without the markings, the information is lost about where the relevant regions are located. 
 
+In this repo, we proposed a straightforward framework to digitally remove ink markings from whole slide images using a conditional generative adversarial network, opening the possibility of using archived clinical samples as resources to fuel the next generation of deep learning models for digital pathology.
+![alt text](./doc/imgs/sample.png) 
 ## Installation
 
 
