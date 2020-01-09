@@ -15,7 +15,7 @@ import time
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--input_patch_root_dir", required=True, help="path to folder containing images")
-parser.add_argument("--input_case_list_txt",required=True, help="a txt file specify a list of folders in which containing images")
+parser.add_argument("--input_case_list_txt", default=None, help="a txt file specify a list of folders in which containing images")
 parser.add_argument("--mode", required=True, choices=["train", "test", "export"])
 parser.add_argument("--output_dir", required=True, help="where to put output files")
 parser.add_argument("--seed", type=int)
@@ -232,7 +232,7 @@ def lab_to_rgb(lab):
 
 
 def load_examples_from_case_list():
-    if a.input_case_list_txt is None or not os.path.exists(a.input_case_list_txt):
+    if not os.path.exists(a.input_case_list_txt):
         raise Exception("input case list txt file does not exist")
 
     lines = open(a.input_case_list_txt, 'r').readlines()
@@ -337,13 +337,13 @@ def load_examples_from_case_list():
 
 
 def load_examples():
-    if a.input_dir is None or not os.path.exists(a.input_dir):
+    if a.input_patch_root_dir is None or not os.path.exists(a.input_patch_root_dir):
         raise Exception("input_dir does not exist")
 
-    input_paths = glob.glob(os.path.join(a.input_dir, "*.jpg"))
+    input_paths = glob.glob(os.path.join(a.input_patch_root_dir, "*.jpg"))
     decode = tf.image.decode_jpeg
     if len(input_paths) == 0:
-        input_paths = glob.glob(os.path.join(a.input_dir, "*.png"))
+        input_paths = glob.glob(os.path.join(a.input_patch_root_dir, "*.png"))
         decode = tf.image.decode_png
 
     if len(input_paths) == 0:
@@ -729,8 +729,10 @@ def main():
 
         return
 
-    # examples = load_examples()
-    examples = load_examples_from_case_list()
+    if a.input_case_list_txt is None:
+        examples = load_examples()
+    else:
+        examples = load_examples_from_case_list()
     print("examples count = %d" % examples.count)
 
     # inputs and targets are [batch_size, height, width, channels]
