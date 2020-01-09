@@ -4,8 +4,18 @@ These slides often contain clinically meaningful markings to indicate regions of
 If slides are scanned with the ink present, then the downstream model may end up looking for regions with ink before making a classification. 
 If scanned without the markings, the information is lost about where the relevant regions are located. 
 
-In this repo, we proposed a straightforward framework to digitally remove ink markings from whole slide images using a conditional generative adversarial network, opening the possibility of using archived clinical samples as resources to fuel the next generation of deep learning models for digital pathology.
-![alt text](./doc/imgs/sample.png) 
+In this repo, we proposed a straightforward framework to digitally remove ink markings from whole slide images using a conditional generative adversarial network, opening the possibility of using archived clinical samples as resources to fuel the next generation of deep learning models for digital pathology.   
+Here is an example of WSI showing the clean scan, marked slides and image after restoration.  
+![Thumbnail level](./doc/imgs/sample.png) 
+Here are some high resolution image patches to show performance of image restoration .
+![High resolution patches](./doc/imgs/sample_patches.png)
+
+If you find this repo helps you, please cite our work:
+```
+@article{jiang2020,
+  title={Image-to-Image Translation for Automatic Ink Removal in Whole Slide Images},
+}
+```
 ## Installation
 
 
@@ -23,8 +33,8 @@ In this repo, we proposed a straightforward framework to digitally remove ink ma
     Please refer [our code](./post_proc/patch_blending.py) for patch reconstruction 
 
 
-
-
+### References
+[1] S. Ali, N. K. Alham, C. Verrill, and J. Rittscher, "Ink removal from histopathology whole slide images by combining classification, detection and image generation models," arXiv preprint arXiv:1905.04385, 2019.
 
 
 
