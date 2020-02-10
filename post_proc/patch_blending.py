@@ -1,6 +1,8 @@
+import fnmatch
+
 import matplotlib.pyplot as plt
 import numpy as np
-import os
+import os, glob
 from PIL import Image
 from itertools import product
 
@@ -171,6 +173,9 @@ def get_patch_arr(img_dir, img_file_name_map, opt_region_size, patch_sz, channel
     return patch_arr
 
 
+
+
+
 # restore image region
 def restore_region(location, region_size, step_sz, patch_sz, channels, img_dir, uuid, chop=True):
     opt_location, opt_region_size = get_closes_location(location, region_size, step_sz)
@@ -201,7 +206,61 @@ def restore_region(location, region_size, step_sz, patch_sz, channels, img_dir, 
         return blend_img, direct_img, org_img
 
 
+def direct_stitch_area(step_sz, patch_sz, channels, img_dir):
+    img_list = fnmatch.filter(os.listdir(img_dir), '*outputs*')
+    x_list = []
+    y_list = []
+    for img_fn in img_list:
+        ele = img_fn.split('_')
+        x_list.append(int(ele[1]))
+        y_list.append(int(ele[2]))
+    x_set = sorted(set(x_list))
+    y_set = sorted(set(y_list))
+    row_cnt = len(y_set)
+    col_cnt = len(x_set)
+    patch_arr = np.zeros([(row_cnt+1)*step_sz, (col_cnt+1)*step_sz, channels]).astype(np.uint8)
+    for idx_y, y in enumerate(y_set):
+        for idx_x, x in enumerate(x_set):
+            for img_fn in img_list:
+                fn_part = str(x) + '_' + str(y)
+                if fn_part in img_fn:
+                    img_arr = np.array(Image.open(os.path.join(img_dir, img_fn), 'r'), dtype=np.uint8)
+                    patch_arr[idx_y*step_sz:(idx_y*step_sz+patch_sz), idx_x*step_sz:(idx_x*step_sz+patch_sz), :] = img_arr
+    return Image.fromarray(patch_arr)
+
+def blending_area(step_sz, patch_sz, channels, img_dir):
+    img_list = fnmatch.filter(os.listdir(img_dir), '*outputs*')
+    x_list = []
+    y_list = []
+    for img_fn in img_list:
+        ele = img_fn.split('_')
+        x_list.append(int(ele[1]))
+        y_list.append(int(ele[2]))
+    x_set = sorted(set(x_list))
+    y_set = sorted(set(y_list))
+    row_cnt = len(y_set)
+    col_cnt = len(x_set)
+    patch_arr = np.zeros([(row_cnt + 1) * step_sz, (col_cnt + 1) * step_sz, channels]).astype(np.uint8)
+
+    return []
+
 if __name__ == "__main__":
+    img_dir = '../img_restored/images'
+
+    patch_sz = 256
+    step_sz = 128
+    channels = 3
+
+    direct_stitched = '../img_reconstructed/stitched.jpg'
+    Img = direct_stitch_area(step_sz, patch_sz, channels, img_dir)
+    Img.save(direct_stitched)
+
+    blended = '../img_reconstructed/blended.jpg'
+    Img = blending_area(step_sz, patch_sz, channels, img_dir)
+    Img.save(direct_stitched)
+
+
+    '''
     # region_size = [1000, 1000]
     # org_location = [39824, 40800]
     # region_size = [256, 256]
@@ -236,7 +295,7 @@ if __name__ == "__main__":
     Image.fromarray(original_img).save(org_name)
 
 
-
+    '''
 
 
 
