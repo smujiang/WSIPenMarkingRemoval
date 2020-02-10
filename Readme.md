@@ -30,23 +30,23 @@ conda install tensorflow-1.14 numpy-1.15 PIL seaborn pandas
 > You may also need to install our [wsitools]() to enable our patch extraction sub-module.
 
 ## Run our workflow
-* Prepare your own dataset [optional]  
+* Step 1 [optional]. Prepare your own dataset   
     Since the volume of image data for this research is huge, we only provide very few image samples in [this directory](./img_samples). 
     
     You may need to extract patches from WSIs, depend on if you would like to run on your own dataset.  
     If you would like to train your own model, you need to prepare some clean an marked image pairs. Please refer to our [pairwise patch extraction code](./patch_extraction/extract_pairs.py)   
     If you would like to test our pre-trained model, you just need marked WSIs for testing. Please refer to our [marked WSI extraction code](./patch_extraction/extract_marked.py)
 
-* Train the model[optional]   
+* Step 2 [optional]. Train the model   
     Please refer to this [bash script](./pix2pix/training.sh) to train the ink removal model. 
 
-* Testing the model  
-    Please refer to this [bash script](./pix2pix/eval.sh) to evaluate the model. You can test your own model (from step 2), or our pre-trained model which can be downloaded from [Google Drive](https://drive.google.com/open?id=1iFKdA-I2Ms_CzhYY9naHfYAR2xrz4ria).
+* Step 3. Testing the model  
+    Please refer to this [bash script](./pix2pix/eval.sh) to evaluate the model. You can train your own model (from step 2), or our pre-trained model which can be downloaded from [Google Drive](https://drive.google.com/open?id=1iFKdA-I2Ms_CzhYY9naHfYAR2xrz4ria).
 
-* Reconstruct the image from restored patches  
+* Step 4. Reconstruct the image from restored patches  
     Please refer [our code](./post_proc/patch_blending.py) for patch reconstruction 
 
-* Quantitative evaluation [optional]   
+* Step 5 [optional]. Quantitative evaluation    
     Evaluation metrics can be calculated with code in ./eval
 
 ### References
