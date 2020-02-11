@@ -55,6 +55,7 @@ conda install tensorflow-1.14 numpy-1.15 PIL seaborn pandas
 
 ### References
 [1] S. Ali, N. K. Alham, C. Verrill, and J. Rittscher, "Ink removal from histopathology whole slide images by combining classification, detection and image generation models," arXiv preprint arXiv:1905.04385, 2019.
+
 [2] Venkatesh, Bairavi, Tosha Shah, Antong Chen, and Soheil Ghafurian. "Restoration of marker occluded hematoxylin and eosin stained whole slide histology images using generative adversarial networks." arXiv preprint arXiv:1910.06428 (2019).
 
 
