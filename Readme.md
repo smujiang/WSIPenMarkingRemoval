@@ -45,7 +45,7 @@ conda install tensorflow-1.14 numpy-1.15 PIL seaborn pandas
     Please refer to this [bash script](./pix2pix/training.sh) to train the ink removal model. You may need to modify some code to load the data for model training.
 
 * Step 3. Testing the model  
-    Please refer to this [bash script](./pix2pix/eval.sh) to evaluate the model. You can test your own model (follow step 2), or run our pre-trained model which can be downloaded from [Google Drive](https://drive.google.com/open?id=1iFKdA-I2Ms_CzhYY9naHfYAR2xrz4ria).
+    Please refer to this [bash script](./pix2pix/eval.sh) to evaluate the model. You can test your own model (follow step 2 to train your model), or run our pre-trained model which can be downloaded from [Google Drive](https://drive.google.com/open?id=1iFKdA-I2Ms_CzhYY9naHfYAR2xrz4ria).
 
 * Step 4. Reconstruct the image from restored patches  
     Please refer [our code](./post_proc/patch_blending.py) for patch reconstruction 
