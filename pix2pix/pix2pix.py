@@ -718,7 +718,10 @@ def main():
         restore_saver = tf.train.Saver()
         export_saver = tf.train.Saver()
 
-        with tf.Session() as sess:
+        tf_config = tf.ConfigProto()
+        tf_config.gpu_options.allow_growth = True
+
+        with tf.Session(config=tf_config) as sess:
             sess.run(init_op)
             print("loading model from checkpoint")
             checkpoint = tf.train.latest_checkpoint(a.checkpoint)
