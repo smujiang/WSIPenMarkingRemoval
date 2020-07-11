@@ -233,7 +233,7 @@ def lab_to_rgb(lab):
 
 def load_examples_from_case_list():
     if not os.path.exists(a.input_case_list_txt):
-        raise Exception("input case list txt file does not exist")
+        raise Exception("input case list txt file %s does not exist" % a.input_case_list_txt)
 
     lines = open(a.input_case_list_txt, 'r').readlines()
     input_paths = []
@@ -534,6 +534,9 @@ def create_model(inputs, targets):
     with tf.variable_scope("generator"):
         out_channels = int(targets.get_shape()[-1])
         outputs = create_generator(inputs, out_channels)
+        # tf.keras.utils.plot_model(outputs,  to_file='generator.png', show_shapes=True, show_layer_names=True)
+
+
 
     # create two copies of discriminator, one for real pairs and one for fake pairs
     # they share the same underlying variables
@@ -541,6 +544,7 @@ def create_model(inputs, targets):
         with tf.variable_scope("discriminator"):
             # 2x [batch, height, width, channels] => [batch, 30, 30, 1]
             predict_real = create_discriminator(inputs, targets)
+            # tf.keras.utils.plot_model(outputs, to_file='discriminator.png', show_shapes=True, show_layer_names=True)
 
     with tf.name_scope("fake_discriminator"):
         with tf.variable_scope("discriminator", reuse=True):
@@ -740,6 +744,9 @@ def main():
 
     # inputs and targets are [batch_size, height, width, channels]
     model = create_model(examples.inputs, examples.targets)
+
+    # from keras.utils.vis_utils import plot_model
+    # plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
 
     # undo colorization splitting on images that we use for display/output
     if a.lab_colorization:
