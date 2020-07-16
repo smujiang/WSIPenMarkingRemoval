@@ -269,13 +269,13 @@ if __name__ == "__main__":
     step_sz, patch_sz = (128, 256)
     channels = 3
     wsi_uuid_list = ["7470963d479b4576bc8768b389b1882e", "4e5a6beed06d4ce48be735e1f3c3abc1",
-                     "024aea97fe4f453abb4abef16be7428a", "a0e53609686a4ae9a824d9525641dc56",
+                     "d83cc7d1c941438e93786fc381ab5bb5", "a0e53609686a4ae9a824d9525641dc56",
                      "c477c949f26a40eca92657b1bcf5dcca"]
-    org_location_1 = [[39824, 40800], [41216, 37908], [41216, 41908], [40216, 38908]] #finished
-    org_location_2 = [[39824, 40800], [40216, 38908], [41200, 41200], [40216, 38908]]
-    org_location_3 = [[39824, 40800], [40216, 38908], [41200, 41200], [40216, 38908]]
-    org_location_4 = [[39824, 40800], [40216, 38908], [41200, 41200], [40216, 38908]]
-    org_location_5 = [[39824, 40800], [40216, 38908], [41200, 41200], [40216, 38908]]
+    org_location_1 = [[39824, 40800], [41216, 37908], [41216, 41908], [40216, 38908], [47071, 37706]]
+    org_location_2 = [[40872, 27687], [42764, 24895], [44208, 26498], [47548, 11087], [45721, 13120]]
+    org_location_3 = [[21723, 40008], [26019, 26304], [34843, 28973], [68357, 54662], [76221, 58489]]
+    org_location_4 = [[29220, 49680], [59996, 37196], [61779, 36414], [40985, 59544], [50038, 29307]]
+    org_location_5 = [[37328, 41051], [21070, 33279], [31096, 24155], [68732, 41287], [38525, 33302]]
     org_location_list = [org_location_1, org_location_2, org_location_3, org_location_4, org_location_5]
     img_dir = "/projects/shart/digital_pathology/data/PenMarking/eval/pixel2pixel_256/images_dispatch"
     img_dir_out = "/projects/shart/digital_pathology/data/PenMarking/eval/pixel2pixel_256/patch_blendings"
@@ -307,8 +307,7 @@ if __name__ == "__main__":
                 Image.fromarray(original_img).save(org_name)
                 tar_name = os.path.join(img_dir_out, wsi_uuid, "target_img" + str(org_location) + ".jpg")
                 Image.fromarray(target_img).save(tar_name)
-            break
-        break
+
 
 
 
