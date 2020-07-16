@@ -144,11 +144,11 @@ def get_relevant_uuid_img_fn(org_location, opt_region_size, step_sz, img_dir, uu
             ele, label, file_type = parse_filename(img_name, os.path.splitext(img_name)[1])
             # print("%s, %s, %s, %s" % (str(loc_x), ele[2], str(loc_y), ele[2]))
             if str(loc_x) == ele[1] and str(loc_y) == ele[2]:
-                print(img_name)
-                print("%s, %s, %s, %s" % (str(loc_x), ele[1], str(loc_y), ele[2]))
-                print("%s, %s" % (f_type, file_type))
+                # print(img_name)
+                # print("%s, %s, %s, %s" % (str(loc_x), ele[1], str(loc_y), ele[2]))
+                # print("%s, %s" % (f_type, file_type))
                 if f_type == file_type:
-                    print("%d, %d, %s" % (int(i / step_sz), int(j / step_sz), img_name))
+                    # print("%d, %d, %s" % (int(i / step_sz), int(j / step_sz), img_name))
                     dic_key_str = str.format("%d, %d" % (int(i/step_sz), int(j/step_sz)))
                     fn_map[dic_key_str] = img_name
     return fn_map
@@ -271,7 +271,7 @@ if __name__ == "__main__":
     wsi_uuid_list = ["7470963d479b4576bc8768b389b1882e", "4e5a6beed06d4ce48be735e1f3c3abc1",
                      "d83cc7d1c941438e93786fc381ab5bb5", "a0e53609686a4ae9a824d9525641dc56",
                      "c477c949f26a40eca92657b1bcf5dcca"]
-    org_location_1 = [[39824, 40800], [41216, 37908], [41216, 41908], [40216, 38908], [47071, 37706]]
+    org_location_1 = [[40800, 39824], [37908, 41216], [41908, 41216], [38908, 40216], [47071, 37706]]
     org_location_2 = [[40872, 27687], [42764, 24895], [44208, 26498], [47548, 11087], [45721, 13120]]
     org_location_3 = [[21723, 40008], [26019, 26304], [34843, 28973], [68357, 54662], [76221, 58489]]
     org_location_4 = [[29220, 49680], [59996, 37196], [61779, 36414], [40985, 59544], [50038, 29307]]
@@ -284,17 +284,18 @@ if __name__ == "__main__":
         print("processing case: %s" % wsi_uuid)
         case_dir = os.path.join(img_dir, wsi_uuid)
         for case_org_locations in org_location_list:
-            for org_location in case_org_locations:
+            for temp in case_org_locations:
+                org_location = [temp[1], temp[0]]
                 # blended_rec_img, direct_rec_img = restore_region(org_location, region_size, step_sz, patch_sz, channels, img_dir, chop=True)
                 blended_rec_img, direct_rec_img, original_img, target_img = restore_region(org_location, region_size, step_sz, patch_sz, channels, case_dir, wsi_uuid, chop=False)
-                print(blended_rec_img.shape)
-                print(direct_rec_img.shape)
-                fig, (axs1, axs2) = plt.subplots(1, 2)
-                axs1.imshow(direct_rec_img)
-                axs2.imshow(blended_rec_img)
-                axs1.axis("off")
-                axs2.axis("off")
-                plt.show()
+                # print(blended_rec_img.shape)
+                # print(direct_rec_img.shape)
+                # fig, (axs1, axs2) = plt.subplots(1, 2)
+                # axs1.imshow(direct_rec_img)
+                # axs2.imshow(blended_rec_img)
+                # axs1.axis("off")
+                # axs2.axis("off")
+                # plt.show()
 
                 if not os.path.exists(os.path.join(img_dir_out, wsi_uuid)):
                     os.makedirs(os.path.join(img_dir_out, wsi_uuid))
