@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import tensorflow as tf
+# import keras
 import numpy as np
 import argparse
 import os
@@ -48,6 +49,7 @@ parser.add_argument("--gan_weight", type=float, default=1.0, help="weight on GAN
 # export options
 parser.add_argument("--output_filetype", default="png", choices=["png", "jpeg"])
 a = parser.parse_args()
+range(0,1)
 
 EPS = 1e-12
 CROP_SIZE = 256
@@ -534,7 +536,8 @@ def create_model(inputs, targets):
     with tf.variable_scope("generator"):
         out_channels = int(targets.get_shape()[-1])
         outputs = create_generator(inputs, out_channels)
-        # tf.keras.utils.plot_model(outputs,  to_file='generator.png', show_shapes=True, show_layer_names=True)
+        model_g = tf.keras.Sequential(outputs)
+        tf.keras.utils.plot_model(model_g,  to_file='generator.png', show_shapes=True, show_layer_names=True)
 
 
 
@@ -729,6 +732,7 @@ def main():
             sess.run(init_op)
             print("loading model from checkpoint")
             checkpoint = tf.train.latest_checkpoint(a.checkpoint)
+
             restore_saver.restore(sess, checkpoint)
             print("exporting model")
             export_saver.export_meta_graph(filename=os.path.join(a.output_dir, "export.meta"))
@@ -745,7 +749,8 @@ def main():
     # inputs and targets are [batch_size, height, width, channels]
     model = create_model(examples.inputs, examples.targets)
 
-    # from keras.utils.vis_utils import plot_model
+    # from tensorflow.utils import plot_model
+    tf.keras.utils.plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
     # plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
 
     # undo colorization splitting on images that we use for display/output
