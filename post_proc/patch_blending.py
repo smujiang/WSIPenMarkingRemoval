@@ -193,7 +193,7 @@ def restore_region(location, region_size, step_sz, patch_sz, channels, img_dir, 
     # org_direct_img = blending_patches(org_patch_arr, p_region_size)
     org_direct_img = direct_reconstruct(org_patch_arr, step_sz, channels, p_region_size)
 
-    tar_img_fn_map = get_relevant_uuid_img_fn(opt_location, opt_region_size, step_sz, img_dir, uuid, f_type="target")
+    tar_img_fn_map = get_relevant_uuid_img_fn(opt_location, opt_region_size, step_sz, img_dir, uuid, f_type="targets")
     tar_patch_arr = get_patch_arr(img_dir, tar_img_fn_map, opt_region_size, patch_sz, channels, step_sz)
     tar_direct_img = direct_reconstruct(tar_patch_arr, step_sz, channels, p_region_size)
 
@@ -271,21 +271,22 @@ if __name__ == "__main__":
     wsi_uuid_list = ["7470963d479b4576bc8768b389b1882e", "4e5a6beed06d4ce48be735e1f3c3abc1",
                      "024aea97fe4f453abb4abef16be7428a", "a0e53609686a4ae9a824d9525641dc56",
                      "c477c949f26a40eca92657b1bcf5dcca"]
-    org_location_1 = [[39824, 40800], [40216, 38908], [41200, 41200], [40216, 38908]]
+    org_location_1 = [[39824, 40800], [41216, 37908], [41216, 41908], [40216, 38908]] #finished
     org_location_2 = [[39824, 40800], [40216, 38908], [41200, 41200], [40216, 38908]]
     org_location_3 = [[39824, 40800], [40216, 38908], [41200, 41200], [40216, 38908]]
     org_location_4 = [[39824, 40800], [40216, 38908], [41200, 41200], [40216, 38908]]
     org_location_5 = [[39824, 40800], [40216, 38908], [41200, 41200], [40216, 38908]]
     org_location_list = [org_location_1, org_location_2, org_location_3, org_location_4, org_location_5]
-    img_dir = "/projects/shart/digital_pathology/data/PenMarking/eval/pixel2pixel_256/images_dispatch/7470963d479b4576bc8768b389b1882e/"
+    img_dir = "/projects/shart/digital_pathology/data/PenMarking/eval/pixel2pixel_256/images_dispatch"
     img_dir_out = "/projects/shart/digital_pathology/data/PenMarking/eval/pixel2pixel_256/patch_blendings"
 
     for wsi_uuid in wsi_uuid_list:
         print("processing case: %s" % wsi_uuid)
+        case_dir = os.path.join(img_dir, wsi_uuid)
         for case_org_locations in org_location_list:
             for org_location in case_org_locations:
                 # blended_rec_img, direct_rec_img = restore_region(org_location, region_size, step_sz, patch_sz, channels, img_dir, chop=True)
-                blended_rec_img, direct_rec_img, original_img, target_img = restore_region(org_location, region_size, step_sz, patch_sz, channels, img_dir, wsi_uuid, chop=False)
+                blended_rec_img, direct_rec_img, original_img, target_img = restore_region(org_location, region_size, step_sz, patch_sz, channels, case_dir, wsi_uuid, chop=False)
                 print(blended_rec_img.shape)
                 print(direct_rec_img.shape)
                 fig, (axs1, axs2) = plt.subplots(1, 2)
@@ -307,6 +308,7 @@ if __name__ == "__main__":
                 tar_name = os.path.join(img_dir_out, wsi_uuid, "target_img" + str(org_location) + ".jpg")
                 Image.fromarray(target_img).save(tar_name)
             break
+        break
 
 
 
