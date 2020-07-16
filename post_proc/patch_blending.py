@@ -193,17 +193,22 @@ def restore_region(location, region_size, step_sz, patch_sz, channels, img_dir, 
     # org_direct_img = blending_patches(org_patch_arr, p_region_size)
     org_direct_img = direct_reconstruct(org_patch_arr, step_sz, channels, p_region_size)
 
+    tar_img_fn_map = get_relevant_uuid_img_fn(opt_location, opt_region_size, step_sz, img_dir, uuid, f_type="target")
+    tar_patch_arr = get_patch_arr(img_dir, tar_img_fn_map, opt_region_size, patch_sz, channels, step_sz)
+    tar_direct_img = direct_reconstruct(tar_patch_arr, step_sz, channels, p_region_size)
+
     direct_rec_img = direct_reconstruct(patch_arr, step_sz, channels, p_region_size)
     blended_rec_img = blending_patches(patch_arr, p_region_size)
     if not chop:
-        return blended_rec_img, direct_rec_img, org_direct_img
+        return blended_rec_img, direct_rec_img, org_direct_img, tar_direct_img
     else:
         roi_x = location[0] - opt_location[0]
         roi_y = location[1] - opt_location[1]
         blend_img = blended_rec_img[roi_x:roi_x + region_size[0], roi_y: roi_y + region_size[1], :]
         direct_img = direct_rec_img[roi_x:roi_x + region_size[0], roi_y: roi_y + region_size[1], :]
         org_img = org_direct_img[roi_x:roi_x + region_size[0], roi_y: roi_y + region_size[1], :]
-        return blend_img, direct_img, org_img
+        tar_img = tar_direct_img[roi_x:roi_x + region_size[0], roi_y: roi_y + region_size[1], :]
+        return blend_img, direct_img, org_img, tar_img
 
 
 def direct_stitch_area(step_sz, patch_sz, channels, img_dir):
@@ -245,57 +250,64 @@ def blending_area(step_sz, patch_sz, channels, img_dir):
     return []
 
 if __name__ == "__main__":
-    img_dir = '../img_restored/images'
+    # img_dir = '../img_restored/images'
+    #
+    # patch_sz = 256
+    # step_sz = 128
+    # channels = 3
+    #
+    # direct_stitched = '../img_reconstructed/stitched.jpg'
+    # Img = direct_stitch_area(step_sz, patch_sz, channels, img_dir)
+    # Img.save(direct_stitched)
+    #
+    # blended = '../img_reconstructed/blended.jpg'
+    # Img = blending_area(step_sz, patch_sz, channels, img_dir)
+    # Img.save(direct_stitched)
 
-    patch_sz = 256
-    step_sz = 128
-    channels = 3
 
-    direct_stitched = '../img_reconstructed/stitched.jpg'
-    Img = direct_stitch_area(step_sz, patch_sz, channels, img_dir)
-    Img.save(direct_stitched)
-
-    blended = '../img_reconstructed/blended.jpg'
-    Img = blending_area(step_sz, patch_sz, channels, img_dir)
-    Img.save(direct_stitched)
-
-
-    '''
-    # region_size = [1000, 1000]
-    # org_location = [39824, 40800]
-    # region_size = [256, 256]
-    # org_location = [40200, 41200]
-    # org_location = [41200, 41200]
     region_size = [256, 256]
-    org_location = [40416, 41908]
-
     step_sz, patch_sz = (128, 256)
     channels = 3
-    wsi_uuid = "7470963d479b4576bc8768b389b1882e"
+    wsi_uuid_list = ["7470963d479b4576bc8768b389b1882e", "4e5a6beed06d4ce48be735e1f3c3abc1",
+                     "024aea97fe4f453abb4abef16be7428a", "a0e53609686a4ae9a824d9525641dc56",
+                     "c477c949f26a40eca92657b1bcf5dcca"]
+    org_location_1 = [[39824, 40800], [40216, 38908], [41200, 41200], [40216, 38908]]
+    org_location_2 = [[39824, 40800], [40216, 38908], [41200, 41200], [40216, 38908]]
+    org_location_3 = [[39824, 40800], [40216, 38908], [41200, 41200], [40216, 38908]]
+    org_location_4 = [[39824, 40800], [40216, 38908], [41200, 41200], [40216, 38908]]
+    org_location_5 = [[39824, 40800], [40216, 38908], [41200, 41200], [40216, 38908]]
+    org_location_list = [org_location_1, org_location_2, org_location_3, org_location_4, org_location_5]
+    img_dir = "/projects/shart/digital_pathology/data/PenMarking/eval/pixel2pixel_256/images_dispatch/7470963d479b4576bc8768b389b1882e/"
+    img_dir_out = "/projects/shart/digital_pathology/data/PenMarking/eval/pixel2pixel_256/patch_blendings"
 
-    img_dir = "/data/PenMarking/eval/pixel2pixel_256/images_dispatch/7470963d479b4576bc8768b389b1882e/"
-    img_dir_out = "/data/PenMarking/eval/pixel2pixel_256/patch_blendings"
+    for wsi_uuid in wsi_uuid_list:
+        print("processing case: %s" % wsi_uuid)
+        for case_org_locations in org_location_list:
+            for org_location in case_org_locations:
+                # blended_rec_img, direct_rec_img = restore_region(org_location, region_size, step_sz, patch_sz, channels, img_dir, chop=True)
+                blended_rec_img, direct_rec_img, original_img, target_img = restore_region(org_location, region_size, step_sz, patch_sz, channels, img_dir, wsi_uuid, chop=False)
+                print(blended_rec_img.shape)
+                print(direct_rec_img.shape)
+                fig, (axs1, axs2) = plt.subplots(1, 2)
+                axs1.imshow(direct_rec_img)
+                axs2.imshow(blended_rec_img)
+                axs1.axis("off")
+                axs2.axis("off")
+                plt.show()
 
-    # blended_rec_img, direct_rec_img = restore_region(org_location, region_size, step_sz, patch_sz, channels, img_dir, chop=True)
-    blended_rec_img, direct_rec_img, original_img = restore_region(org_location, region_size, step_sz, patch_sz, channels, img_dir, wsi_uuid, chop=False)
-    print(blended_rec_img.shape)
-    print(direct_rec_img.shape)
-    fig, (axs1, axs2) = plt.subplots(1, 2)
-    axs1.imshow(direct_rec_img)
-    axs2.imshow(blended_rec_img)
-    axs1.axis("off")
-    axs2.axis("off")
-    plt.show()
+                if not os.path.exists(os.path.join(img_dir_out, wsi_uuid)):
+                    os.makedirs(os.path.join(img_dir_out, wsi_uuid))
 
-    direct_name = os.path.join(img_dir_out, "direct_stitch.jpg")
-    Image.fromarray(direct_rec_img).save(direct_name)
-    blending_name = os.path.join(img_dir_out, "blending_stitch.jpg")
-    Image.fromarray(blended_rec_img).save(blending_name)
-    org_name = os.path.join(img_dir_out, "original_img.jpg")
-    Image.fromarray(original_img).save(org_name)
+                direct_name = os.path.join(img_dir_out, wsi_uuid, "direct_stitch"+str(org_location)+".jpg")
+                Image.fromarray(direct_rec_img).save(direct_name)
+                blending_name = os.path.join(img_dir_out, wsi_uuid, "blending_stitch"+str(org_location)+".jpg")
+                Image.fromarray(blended_rec_img).save(blending_name)
+                org_name = os.path.join(img_dir_out, wsi_uuid, "original_img"+str(org_location)+".jpg")
+                Image.fromarray(original_img).save(org_name)
+                tar_name = os.path.join(img_dir_out, wsi_uuid, "target_img" + str(org_location) + ".jpg")
+                Image.fromarray(target_img).save(tar_name)
+            break
 
-
-    '''
 
 
 
