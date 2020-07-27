@@ -621,6 +621,27 @@ def save_images(fetches, step=None):
     return filesets
 
 
+def my_save_images(fetches, step=None):
+    filesets = []
+    for i, in_path in enumerate(fetches["paths"]):
+        name, _ = os.path.splitext(os.path.basename(in_path.decode("utf8")))
+        image_dir = os.path.join(a.output_dir, name)
+        if not os.path.exists(image_dir):
+            os.makedirs(image_dir)
+        fileset = {"name": name, "step": step}
+        for kind in ["inputs", "outputs", "targets"]:
+            filename = name + "-" + kind + ".png"
+            if step is not None:
+                filename = "%08d-%s" % (step, filename)
+            fileset[kind] = filename
+            out_path = os.path.join(image_dir, filename)
+            contents = fetches[kind][i]
+            with open(out_path, "wb") as f:
+                f.write(contents)
+        filesets.append(fileset)
+    return filesets
+
+
 def append_index(filesets, step=False):
     index_path = os.path.join(a.output_dir, "index.html")
     if os.path.exists(index_path):
@@ -750,7 +771,7 @@ def main():
     model = create_model(examples.inputs, examples.targets)
 
     # from tensorflow.utils import plot_model
-    tf.keras.utils.plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
+    # tf.keras.utils.plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
     # plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
 
     # undo colorization splitting on images that we use for display/output
@@ -855,11 +876,12 @@ def main():
             max_steps = min(examples.steps_per_epoch, max_steps)
             for step in range(max_steps):
                 results = sess.run(display_fetches)
-                filesets = save_images(results)
+                # filesets = save_images(results)
+                filesets = my_save_images(results)
                 for i, f in enumerate(filesets):
                     print("evaluated image", f["name"])
-                index_path = append_index(filesets)
-            print("wrote index at", index_path)
+                # index_path = append_index(filesets)
+            # print("wrote index at", index_path)
             print("rate", (time.time() - start) / max_steps)
         else:
             # training
