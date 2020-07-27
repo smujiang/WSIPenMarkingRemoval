@@ -11,7 +11,7 @@ python pix2pix.py \
   --mode test \
   --output_dir ${test_output} \
   --input_patch_root_dir ${patch_root_dir} \
-  --checkpoint ${Train_output}
+  --checkpoint ${Train_output}\
   --input_case_list_txt ${testing_case_txt_50} \
   --which_direction BtoA
 

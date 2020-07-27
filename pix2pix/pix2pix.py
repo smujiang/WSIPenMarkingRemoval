@@ -536,8 +536,8 @@ def create_model(inputs, targets):
     with tf.variable_scope("generator"):
         out_channels = int(targets.get_shape()[-1])
         outputs = create_generator(inputs, out_channels)
-        model_g = tf.keras.Sequential(outputs)
-        tf.keras.utils.plot_model(model_g,  to_file='generator.png', show_shapes=True, show_layer_names=True)
+        # model_g = tf.keras.Sequential(outputs)
+        # tf.keras.utils.plot_model(model_g,  to_file='generator.png', show_shapes=True, show_layer_names=True)
 
 
 
