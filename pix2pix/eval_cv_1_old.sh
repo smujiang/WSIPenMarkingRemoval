@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
-export CUDA_VISIBLE_DEVICES=1
-patch_root_dir=/projects/shart/digital_pathology/data/PenMarking/testing_data   # patches root directory need to be restored
+# export CUDA_VISIBLE_DEVICES=2
+patch_root_dir=/projects/shart/digital_pathology/data/PenMarking/WSIs_Img_pairs_256   # patches root directory need to be restored
 test_output=/projects/shart/digital_pathology/data/PenMarking/WSIs_Img_pairs_256_restored    # evaluation output directory
 testing_case_txt_50=/projects/shart/digital_pathology/data/PenMarking/WSIs/testing_cases_50_cv_1.txt # directory where saves WSI training cases
 
@@ -12,7 +12,6 @@ python pix2pix.py \
   --output_dir ${test_output} \
   --input_patch_root_dir ${patch_root_dir} \
   --checkpoint ${Train_output}\
-  --input_case_list_txt ${testing_case_txt_50}\
-  --max_epochs 1\
-  --max_steps  1
+  --input_case_list_txt ${testing_case_txt_50} \
+
 

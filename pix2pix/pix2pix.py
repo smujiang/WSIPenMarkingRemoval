@@ -243,7 +243,7 @@ def load_examples_from_case_list():
         if l.strip():
             case_uuid = os.path.splitext(os.path.split(l.strip())[1])[0]
             case_patches_dir = os.path.join(a.input_patch_root_dir, case_uuid)
-            print()
+            # print()
             temp_paths = glob.glob(os.path.join(case_patches_dir, "*.jpg"))
             if len(temp_paths) == 0:
                 temp_paths = glob.glob(os.path.join(case_patches_dir, "*.png"))
@@ -292,6 +292,7 @@ def load_examples_from_case_list():
             width = tf.shape(raw_input)[1] # [height, width, channels]
             a_images = preprocess(raw_input[:,:width//2,:])
             b_images = preprocess(raw_input[:,width//2:,:])
+            print(width)
 
     if a.which_direction == "AtoB":
         inputs, targets = [a_images, b_images]
@@ -625,7 +626,7 @@ def my_save_images(fetches, step=None):
     filesets = []
     for i, in_path in enumerate(fetches["paths"]):
         name, _ = os.path.splitext(os.path.basename(in_path.decode("utf8")))
-        image_dir = os.path.join(a.output_dir, name)
+        image_dir = os.path.join(a.output_dir, name.split("_")[0])
         if not os.path.exists(image_dir):
             os.makedirs(image_dir)
         fileset = {"name": name, "step": step}
