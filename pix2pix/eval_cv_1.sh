@@ -13,6 +13,5 @@ python pix2pix.py \
   --input_patch_root_dir ${patch_root_dir} \
   --checkpoint ${Train_output}\
   --input_case_list_txt ${testing_case_txt_50}\
-  --max_epochs 1\
-  --max_steps  1
+
 
