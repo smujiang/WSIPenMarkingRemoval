@@ -7,9 +7,7 @@ If scanned without the markings, the information is lost about where the relevan
 In this repo, we proposed a straightforward framework to digitally remove ink markings from whole slide images using a conditional generative adversarial network, opening the possibility of using archived clinical samples as resources to fuel the next generation of deep learning models for digital pathology.   
 Please read our paper to get more details. If you find this repo helps you, please cite our work:
 ```
-@article{jiang2020,
-  title={Image-to-Image Translation for Automatic Ink Removal in Whole Slide Images},
-}
+Jiang, Jun, Naresh Prodduturi, David Chen, Qiangqiang Gu, Thomas Flotte, Qianjin Feng, and Steven Hart. "Image-to-image translation for automatic ink removal in whole slide images." Journal of Medical Imaging 7, no. 5 (2020): 057502.
 ```
 
 Here is an example of WSI showing the clean scan, marked slides and image after restoration.  
