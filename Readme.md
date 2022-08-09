@@ -29,7 +29,7 @@ git clone https://github.com/smujiang/WSIPenMarkingRemoval.git
 ```
 conda install tensorflow-1.14 numpy-1.15 PIL seaborn pandas
 ```
-> You may also need to install our [wsitools]() to enable our patch extraction sub-module.
+> You may also need to install our [WSITools](https://github.com/smujiang/WSITools) to enable our patch extraction sub-module.
 
 ## Run our workflow
 * Step 1 [optional]. Prepare your own dataset   
